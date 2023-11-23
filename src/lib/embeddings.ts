@@ -13,7 +13,15 @@ export async function getEmbeddings(text: string) {
       input: text.replace(/\n/g, " "),
     });
     const result = await response.json();
-    return result.data[0].embedding as number[];
+    console.log("OpenAI API Response:", result);
+
+
+   if (result.data && result.data.length > 0) {
+      return result.data[0].embedding as number[];
+    } else {
+      console.error("Invalid response from OpenAI API - result.data is undefined or empty");
+      throw new Error("Invalid response from OpenAI API");
+    }
   } catch (error) {
     console.log("error calling openai embeddings api", error);
     throw error;
